@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "LoopMe"
+dynamic = ["version"]
+description = "Quickly create handy music loops for your video projects."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Caleb Trevatt", email = "g70psl5x@duck.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+]
+dependencies = [
+    "librosa>=0.7.2",
+    "mpg123>=0.4",
+    "numpy>=1.18.2",
+    "soundfile>=0.10.3.post1",
+    "tqdm>=4.45.0",
+    "rich",
+    "gradio",
+]
+
+[project.scripts]
+loopme = "pymusiclooper.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/in03/PyMusicLooper"
+
+[tool.hatch.version]
+path = "pymusiclooper/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src/pymusiclooper",
+]
+
