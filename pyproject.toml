@@ -35,6 +35,8 @@ dependencies = [
     "tqdm>=4.45.0",
     "rich",
     "gradio",
+    "pywebview",
+    "pyobjc-framework-Security",
 ]
 
 [project.scripts]

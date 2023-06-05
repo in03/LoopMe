@@ -6,6 +6,8 @@ import os
 import sys
 import warnings
 from multiprocessing import Process
+from threading import Thread
+import webview
 
 import numpy as np
 
@@ -39,7 +41,7 @@ def flip_text(x):
 def flip_image(x):
     return np.fliplr(x)
 
-def main():
+def ui():
     with gr.Blocks() as demo:
         
         gr.Markdown(
@@ -75,6 +77,20 @@ def main():
         # audio_button.click(flip_image, inputs=files, outputs=audio_output)
 
     demo.launch()
+
+
+def main():
+    
+    ui_thread = Thread(target=ui, daemon=True)
+    ui_thread.start()
+    webview.create_window(
+        "LoopMe", 
+        width=400, 
+        height=600, 
+        url="http://127.0.0.1:7860"
+    )
+    webview.start()
+    
 
 def cli_main():
     parser = ArgParser(
