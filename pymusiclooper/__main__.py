@@ -5,13 +5,14 @@ import logging
 import os
 import sys
 import warnings
-from multiprocessing import Process
-from threading import Thread
-import webview
 
-import numpy as np
+import random
+from PySide6.QtWidgets import (
+    QLineEdit, QPushButton, QApplication, QVBoxLayout, QDialog, QFileDialog, QMainWindow, QTextEdit
+)
 
-import gradio as gr
+from PySide6 import QtGui
+from PySide6.QtCore import Slot
 
 from tqdm import tqdm
 
@@ -20,6 +21,47 @@ from pymusiclooper import __version__
 from .argparser import ArgParser
 from .core import MusicLooper
 from .exceptions import LoopNotFoundError, AudioLoadError
+
+
+
+class MainWin(QDialog):
+    
+    def __init__(self):
+        super(MainWin, self).__init__()
+        
+        self.initUI()
+        
+    def initUI(self):      
+        
+        self.openButton = QPushButton('Open')
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.openButton)
+        self.setLayout(layout)
+
+        self.openButton.clicked.connect(self.showDialog)
+
+        
+        self.setGeometry(300, 300, 350, 300)
+        self.setWindowTitle('File dialog')
+        self.show()
+        
+    def showDialog(self):
+
+        fname, _ = QFileDialog.getOpenFileNames(self, 'Open file',
+                    '/home')
+        
+        f = open(fname, 'r')
+        
+        with f:
+            data = f.read()
+            self.textEdit.setText(data)
+                                
+        
+
+
+
+        
 
 
 def loop_pairs(file_path, min_duration_multiplier):
@@ -34,12 +76,7 @@ def loop_pairs(file_path, min_duration_multiplier):
 
     return loop_pair_list
 
-def flip_text(x):
-    return x[::-1]
 
-
-def flip_image(x):
-    return np.fliplr(x)
 
 def ui():
     with gr.Blocks() as demo:
@@ -79,17 +116,19 @@ def ui():
     demo.launch()
 
 
+
 def main():
     
-    ui_thread = Thread(target=ui, daemon=True)
-    ui_thread.start()
-    webview.create_window(
-        "LoopMe", 
-        width=400, 
-        height=600, 
-        url="http://127.0.0.1:7860"
-    )
-    webview.start()
+    app = QApplication(sys.argv)
+    ex = MainWin()
+    ex.show()
+    sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()
+
+
     
 
 def cli_main():

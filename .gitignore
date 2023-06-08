@@ -148,3 +148,4 @@ cython_debug/
 
 # Ignore generated cache file
 cache.json
+.DS_Store
